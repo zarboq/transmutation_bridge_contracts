@@ -23,6 +23,6 @@ contract SPBridge {
         UserInfo storage user = tokenToUser[_token];
         user.counter += 1;
         user.amount -= _amount;
-        IERC20(_token).transferFrom(address(this), msg.sender, _amount);
+        IERC20(_token).transfer(msg.sender, _amount);
     }
 }
