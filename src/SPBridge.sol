@@ -2,27 +2,19 @@
 pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract SPBridge {
+contract SPBridge is ReentrancyGuard {
 
     struct UserInfo {
         uint256 amount;
-        uint32 counter;
     }
 
     // counter used on L2 to check if funds have been unstaked between two operations
-    mapping(address => mapping(address => UserInfo)) public tokenToUser;
+    mapping(address => UserInfo) public users;
 
-    function lock(address _token, uint256 _amount) external {
-        IERC20(_token).transferFrom(msg.sender, address(this), _amount);
-        UserInfo storage user = tokenToUser[_token][msg.sender];
-        user.amount += _amount;
-    }
-
-    function unlock(address _token, uint256 _amount) external {
-        UserInfo storage user = tokenToUser[_token][msg.sender];
-        user.counter += 1;
-        user.amount -= _amount;
-        IERC20(_token).transfer(msg.sender, _amount);
+    function lock() payable external nonReentrant() {
+        UserInfo storage user = users[msg.sender];
+        user.amount += msg.value;
     }
 }
