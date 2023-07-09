@@ -27,5 +27,7 @@ contract CounterTest is Test {
 
         assertEq(mockToken.balanceOf(address(this)), amount);
         assertEq(mockToken.balanceOf(address(spBridge)), 0);
+        (,uint256 counter) = spBridge.tokenToUser(address(mockToken), address(this));
+        assertEq(counter, 1);
     }
 }
