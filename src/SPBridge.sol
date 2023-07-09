@@ -8,6 +8,7 @@ contract SPBridge is ReentrancyGuard {
 
     struct UserInfo {
         uint256 amount;
+        uint256 timestamp;
     }
 
     // counter used on L2 to check if funds have been unstaked between two operations
@@ -16,5 +17,6 @@ contract SPBridge is ReentrancyGuard {
     function lock() payable external nonReentrant() {
         UserInfo storage user = users[msg.sender];
         user.amount += msg.value;
+        user.timestamp = block.timestamp;
     }
 }

@@ -16,5 +16,6 @@ contract CounterTest is Test {
         spBridge.lock{value: 5}();
         
         assertEq(address(spBridge).balance, 5);
+        
     }
 }
