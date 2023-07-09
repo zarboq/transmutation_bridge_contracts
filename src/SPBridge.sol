@@ -11,7 +11,6 @@ contract SPBridge is ReentrancyGuard {
         uint256 timestamp;
     }
 
-    // counter used on L2 to check if funds have been unstaked between two operations
     mapping(address => UserInfo) public users;
 
     function lock() payable external nonReentrant() {
