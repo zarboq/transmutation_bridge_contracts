@@ -9,13 +9,15 @@ contract SPBridge is ReentrancyGuard {
     struct UserInfo {
         uint256 amount;
         uint256 timestamp;
+        uint256 l2UserAddress;
     }
 
     mapping(address => UserInfo) public users;
 
-    function lock() payable external nonReentrant() {
+    function lock(uint256 _l2UserAddress) payable external nonReentrant() {
         UserInfo storage user = users[msg.sender];
         user.amount += msg.value;
         user.timestamp = block.timestamp;
+        user.l2UserAddress = _l2UserAddress;
     }
 }
